@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     tagline: "Household & Kitchenware Store",
     ownerName: "Varun",
     whatsapp: "919125271978", // Owner's WhatsApp (+91 91252 71978)
-    googleMapsUrl: "https://maps.app.goo.gl/e6FyBFidXckdq3vH8",
+    googleMapsUrl: "https://maps.app.goo.gl/WFw2w6Xts6sgPDwx6",
     phone: "+91 91252 71978",
     geminiApiKey: ""
   };
@@ -27,10 +27,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (stored) {
         const parsed = JSON.parse(stored);
         // Automatically upgrade any old demo placeholders to the owner's official details
-        if (parsed.googleMapsUrl && parsed.googleMapsUrl.includes("ChIJVarunaTradersDemo")) {
+        if (!parsed.googleMapsUrl || parsed.googleMapsUrl.includes("ChIJVarunaTradersDemo") || parsed.googleMapsUrl.includes("e6FyBFidXckdq3vH8")) {
           parsed.googleMapsUrl = DEFAULT_SETTINGS.googleMapsUrl;
         }
-        if (parsed.whatsapp && parsed.whatsapp.includes("9876543210")) {
+        if (!parsed.whatsapp || parsed.whatsapp.includes("9876543210")) {
           parsed.whatsapp = DEFAULT_SETTINGS.whatsapp;
           parsed.phone = DEFAULT_SETTINGS.phone;
         }
