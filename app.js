@@ -13,9 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
     storeName: "Varuna Traders",
     tagline: "Household & Kitchenware Store",
     ownerName: "Varun",
-    whatsapp: "919876543210", // Owner's WhatsApp number with country code (no + or spaces)
-    googleMapsUrl: "https://search.google.com/local/writereview?placeid=ChIJVarunaTradersDemo",
-    phone: "+91 98765 43210",
+    whatsapp: "919125271978", // Owner's WhatsApp (+91 91252 71978)
+    googleMapsUrl: "https://maps.app.goo.gl/e6FyBFidXckdq3vH8",
+    phone: "+91 91252 71978",
     geminiApiKey: ""
   };
 
@@ -25,7 +25,16 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const stored = localStorage.getItem("varuna_traders_settings");
       if (stored) {
-        currentSettings = { ...DEFAULT_SETTINGS, ...JSON.parse(stored) };
+        const parsed = JSON.parse(stored);
+        // Automatically upgrade any old demo placeholders to the owner's official details
+        if (parsed.googleMapsUrl && parsed.googleMapsUrl.includes("ChIJVarunaTradersDemo")) {
+          parsed.googleMapsUrl = DEFAULT_SETTINGS.googleMapsUrl;
+        }
+        if (parsed.whatsapp && parsed.whatsapp.includes("9876543210")) {
+          parsed.whatsapp = DEFAULT_SETTINGS.whatsapp;
+          parsed.phone = DEFAULT_SETTINGS.phone;
+        }
+        currentSettings = { ...DEFAULT_SETTINGS, ...parsed };
       }
     } catch (e) {
       console.warn("Could not load stored settings, using defaults.", e);
@@ -269,17 +278,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Realistic Typing Effect
+  let activeTypingTimer = null;
+
+  // Realistic Typing Effect (cancels previous animation so text is never scrambled)
   function typewriteText(element, fullText) {
+    if (activeTypingTimer) {
+      clearInterval(activeTypingTimer);
+      activeTypingTimer = null;
+    }
     element.value = "";
     let i = 0;
-    const speed = fullText.length > 150 ? 8 : 12; // Fast typing speed
-    const timer = setInterval(() => {
+    const speed = fullText.length > 150 ? 6 : 10;
+    activeTypingTimer = setInterval(() => {
       if (i < fullText.length) {
         element.value += fullText.charAt(i);
         i++;
       } else {
-        clearInterval(timer);
+        clearInterval(activeTypingTimer);
+        activeTypingTimer = null;
       }
     }, speed);
   }
@@ -356,12 +372,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btnSendWhatsApp) {
     btnSendWhatsApp.addEventListener("click", () => {
       const customerName = custName.value.trim() || "Valued Customer";
-      const details = privateFeedbackText.value.trim();
-      const rawPhone = currentSettings.whatsapp.replace(/\D/g, "");
+      let rawPhone = currentSettings.whatsapp.replace(/\D/g, "");
 
       if (!rawPhone) {
-        showToast("Owner WhatsApp number is not configured in settings!", "normal");
-        return;
+        rawPhone = "919125271978";
+      } else if (rawPhone.length === 10) {
+        rawPhone = "91" + rawPhone;
       }
 
       // Format clean message for WhatsApp
