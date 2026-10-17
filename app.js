@@ -438,74 +438,92 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // --------------------------------------------------------------------------
-  // Modal: Owner Settings Configuration
-  // --------------------------------------------------------------------------
-  if (btnOpenSettings) {
-    btnOpenSettings.addEventListener("click", () => {
-      // Pre-fill inputs
-      settingStoreName.value = currentSettings.storeName;
-      settingOwnerName.value = currentSettings.ownerName;
-      settingWhatsapp.value = currentSettings.whatsapp;
-      settingGoogleMapsUrl.value = currentSettings.googleMapsUrl;
-      settingPhone.value = currentSettings.phone;
-      settingGeminiApiKey.value = currentSettings.geminiApiKey || "";
-
-      settingsModal.classList.add("active");
+  const btnDownloadJpg = document.getElementById("btnDownloadJpg");
+  if (btnDownloadJpg) {
+    btnDownloadJpg.addEventListener("click", () => {
+      downloadQrAsJpg();
     });
   }
 
-  if (btnCloseSettings) {
-    btnCloseSettings.addEventListener("click", () => {
-      settingsModal.classList.remove("active");
-    });
-  }
-
-  if (settingsForm) {
-    settingsForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const updated = {
-        storeName: settingStoreName.value.trim() || DEFAULT_SETTINGS.storeName,
-        ownerName: settingOwnerName.value.trim() || DEFAULT_SETTINGS.ownerName,
-        whatsapp: settingWhatsapp.value.trim().replace(/\D/g, "") || DEFAULT_SETTINGS.whatsapp,
-        googleMapsUrl: settingGoogleMapsUrl.value.trim() || DEFAULT_SETTINGS.googleMapsUrl,
-        phone: settingPhone.value.trim() || DEFAULT_SETTINGS.phone,
-        geminiApiKey: settingGeminiApiKey.value.trim()
-      };
-      saveSettings(updated);
-      settingsModal.classList.remove("active");
-
-      // Re-render review if currently in 5-star view
-      if (selectedStars === 5) {
-        triggerAiGeneration();
-      }
-    });
-  }
-
-  if (btnResetSettings) {
-    btnResetSettings.addEventListener("click", () => {
-      if (confirm("Reset all settings back to defaults?")) {
-        saveSettings(DEFAULT_SETTINGS);
-        settingStoreName.value = DEFAULT_SETTINGS.storeName;
-        settingOwnerName.value = DEFAULT_SETTINGS.ownerName;
-        settingWhatsapp.value = DEFAULT_SETTINGS.whatsapp;
-        settingGoogleMapsUrl.value = DEFAULT_SETTINGS.googleMapsUrl;
-        settingPhone.value = DEFAULT_SETTINGS.phone;
-        settingGeminiApiKey.value = "";
-      }
-    });
-  }
-
-  // Close modals on clicking overlay backdrop
-  [qrModal, settingsModal].forEach((modal) => {
-    if (modal) {
-      modal.addEventListener("click", (e) => {
-        if (e.target === modal) {
-          modal.classList.remove("active");
-        }
-      });
+  function downloadQrAsJpg() {
+    const sourceCanvas = qrCanvasContainer ? qrCanvasContainer.querySelector("canvas") : null;
+    if (!sourceCanvas) {
+      showToast("Generating QR code...", "normal");
+      return;
     }
-  });
+
+    // Create a high-res standee badge with white background for clean JPG export
+    const exportCanvas = document.createElement("canvas");
+    const ctx = exportCanvas.getContext("2d");
+    
+    exportCanvas.width = 600;
+    exportCanvas.height = 760;
+
+    // Crisp white background
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+
+    // Elegant emerald outer border
+    ctx.strokeStyle = "#0f5132";
+    ctx.lineWidth = 10;
+    ctx.strokeRect(18, 18, exportCanvas.width - 36, exportCanvas.height - 36);
+
+    // Inner gold accent border
+    ctx.strokeStyle = "#f59e0b";
+    ctx.lineWidth = 2.5;
+    ctx.strokeRect(28, 28, exportCanvas.width - 56, exportCanvas.height - 56);
+
+    // Shop Title
+    ctx.fillStyle = "#0f5132";
+    ctx.font = "bold 38px Arial, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(currentSettings.storeName, exportCanvas.width / 2, 85);
+
+    // Subtitle
+    ctx.fillStyle = "#475569";
+    ctx.font = "bold 20px Arial, sans-serif";
+    ctx.fillText("Scan & Share Your Google Review", exportCanvas.width / 2, 122);
+
+    // Draw QR code scaled clearly in the center
+    const qrSize = 400;
+    const qrX = (exportCanvas.width - qrSize) / 2;
+    const qrY = 150;
+    ctx.drawImage(sourceCanvas, qrX, qrY, qrSize, qrSize);
+
+    // Stars
+    ctx.fillStyle = "#f59e0b";
+    ctx.font = "bold 34px Arial, sans-serif";
+    ctx.fillText("★ ★ ★ ★ ★", exportCanvas.width / 2, 595);
+
+    // Tagline
+    ctx.fillStyle = "#0f5132";
+    ctx.font = "bold 20px Arial, sans-serif";
+    ctx.fillText("Owner-Managed Household & Kitchenware Store", exportCanvas.width / 2, 640);
+
+    ctx.fillStyle = "#64748b";
+    ctx.font = "16px Arial, sans-serif";
+    ctx.fillText("Support our neighborhood shop with a 5-star review!", exportCanvas.width / 2, 678);
+
+    // Convert to JPG and trigger download
+    const jpgUrl = exportCanvas.toDataURL("image/jpeg", 0.95);
+    const downloadLink = document.createElement("a");
+    downloadLink.download = "Varuna-Traders-QR.jpg";
+    downloadLink.href = jpgUrl;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+
+    showToast("✓ QR Code downloaded as JPG!", "success");
+  }
+
+  // Close QR modal on clicking overlay backdrop
+  if (qrModal) {
+    qrModal.addEventListener("click", (e) => {
+      if (e.target === qrModal) {
+        qrModal.classList.remove("active");
+      }
+    });
+  }
 
   // Current year in footer
   const yearElem = document.getElementById("currentYear");

@@ -21,18 +21,12 @@
         </div>
       </div>
       <div class="top-actions">
-        <button id="btnOpenQr" class="icon-btn" title="Counter QR Standee" aria-label="Open Counter QR Standee">
+        <button id="btnOpenQr" class="icon-btn" title="Shop Counter QR Standee" aria-label="Open Counter QR Standee">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="3" width="7" height="7"></rect>
             <rect x="14" y="3" width="7" height="7"></rect>
             <rect x="14" y="14" width="7" height="7"></rect>
             <rect x="3" y="14" width="7" height="7"></rect>
-          </svg>
-        </button>
-        <button id="btnOpenSettings" class="icon-btn" title="Store & Owner Settings" aria-label="Store Settings">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
           </svg>
         </button>
       </div>
@@ -237,73 +231,25 @@
         <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 14px;">
           Customers simply point their camera here to access the review page.
         </p>
-        <button class="btn-print" id="btnPrintQr">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="6 9 6 2 18 2 18 9"></polyline>
-            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-            <rect x="6" y="14" width="12" height="8"></rect>
-          </svg>
-          <span>Print Counter Display</span>
-        </button>
+        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 10px;">
+          <button class="btn-print" id="btnDownloadJpg" style="background: linear-gradient(135deg, #198754, #0f5132); padding: 12px 20px; font-size: 0.9rem;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Download QR (JPG)</span>
+          </button>
+          <button class="btn-print" id="btnPrintQr" style="background: #ffffff; color: var(--text-main); border: 1.5px solid var(--border); padding: 12px 18px; font-size: 0.9rem;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 6 2 18 2 18 9"></polyline>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+              <rect x="6" y="14" width="12" height="8"></rect>
+            </svg>
+            <span>Print Standee</span>
+          </button>
+        </div>
       </div>
-    </div>
-  </div>
-
-  <!-- ======================================================================
-       MODAL 2: Owner Settings Panel (WhatsApp, Google Maps link, etc.)
-       ====================================================================== -->
-  <div class="modal-overlay" id="settingsModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div class="modal-title">
-          <span>⚙️</span>
-          <span>Owner & Store Configuration</span>
-        </div>
-        <button class="modal-close" id="btnCloseSettings">&times;</button>
-      </div>
-
-      <form id="settingsForm">
-        <div class="input-group">
-          <label class="input-label" for="settingStoreName">Shop Name:</label>
-          <input type="text" id="settingStoreName" class="text-input" required>
-        </div>
-
-        <div class="input-group">
-          <label class="input-label" for="settingOwnerName">Owner Name:</label>
-          <input type="text" id="settingOwnerName" class="text-input" placeholder="e.g. Varun / Shop Owner">
-        </div>
-
-        <div class="input-group">
-          <label class="input-label" for="settingWhatsapp">Owner WhatsApp Number (with Country Code):</label>
-          <input type="text" id="settingWhatsapp" class="text-input" placeholder="e.g. 9125271978 or 919125271978" required>
-          <small style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 2px;">
-            Ratings of 1-4 stars will send complaints directly to this WhatsApp number.
-          </small>
-        </div>
-
-        <div class="input-group">
-          <label class="input-label" for="settingGoogleMapsUrl">Google Maps Review Link:</label>
-          <input type="url" id="settingGoogleMapsUrl" class="text-input" placeholder="https://maps.app.goo.gl/WFw2w6Xts6sgPDwx6" required>
-          <small style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 2px;">
-            5-star reviews will be copied and directed to this Google Maps review link.
-          </small>
-        </div>
-
-        <div class="input-group">
-          <label class="input-label" for="settingPhone">Store Phone (for direct calls):</label>
-          <input type="text" id="settingPhone" class="text-input" placeholder="+91 91252 71978">
-        </div>
-
-        <div class="input-group">
-          <label class="input-label" for="settingGeminiApiKey">Gemini API Key (Optional for cloud AI):</label>
-          <input type="password" id="settingGeminiApiKey" class="text-input" placeholder="Leave empty to use built-in offline SEO generator">
-        </div>
-
-        <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px;">
-          <button type="button" class="btn-secondary" id="btnResetSettings">Reset Defaults</button>
-          <button type="submit" class="btn-secondary" style="background: var(--primary); color: #fff; border: none;">Save Settings</button>
-        </div>
-      </form>
     </div>
   </div>
 
